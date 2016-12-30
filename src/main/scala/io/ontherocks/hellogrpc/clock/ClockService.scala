@@ -22,7 +22,7 @@ import io.grpc.stub.StreamObserver
 class ClockService extends ClockGrpc.Clock {
 
   def getTime(request: TimeRequest, responseObserver: StreamObserver[TimeResponse]): Unit = {
-    for (i <- 1 to 10) {
+    for (i <- 1 to 10) { // limit to the next ten seconds
       val currentTime = System.currentTimeMillis()
       responseObserver.onNext(TimeResponse(currentTime))
       Thread.sleep(1000) // just for demo purposes - don't do this

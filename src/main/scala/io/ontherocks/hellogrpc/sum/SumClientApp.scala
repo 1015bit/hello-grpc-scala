@@ -36,14 +36,14 @@ object SumClientApp {
     // blocking/synchronous call
     val blockingSumClient: SumBlockingStub = SumGrpc.blockingStub(channel)
     val blockingSumResponse: SumResponse   = blockingSumClient.calcSum(request)
-    println(s"Blocking sum client response: $blockingSumResponse")
+    println(s"[blocking client] received response: $blockingSumResponse")
 
     // non-blocking/asynchronous call
     val asyncSumClient: SumStub               = SumGrpc.stub(channel)
     val asyncSumResponse: Future[SumResponse] = asyncSumClient.calcSum(request)
     asyncSumResponse.onComplete {
-      case Success(sumResponse) => println(s"Async sum client response: $sumResponse")
-      case Failure(e)           => println(s"Error while calling sum service: $e")
+      case Success(sumResponse) => println(s"[async client] received response: $sumResponse")
+      case Failure(e)           => println(s"[async client] error while calling sum service: $e")
     }
   }
 

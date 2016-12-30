@@ -82,10 +82,8 @@ lazy val headerSettings =
 import com.trueaccord.scalapb.compiler.Version.scalapbVersion
 lazy val pbSettings =
   Seq(
-    PB.protoSources.in(Compile) :=
-      Seq(sourceDirectory.in(Compile).value / "proto"),
-    PB.targets.in(Compile) :=
-      Seq(scalapb.gen() -> sourceManaged.in(Compile).value),
+    PB.protoSources.in(Compile) := Seq(sourceDirectory.in(Compile).value / "proto"),
+    PB.targets.in(Compile) := Seq(scalapb.gen() -> sourceManaged.in(Compile).value),
     libraryDependencies ++= Seq(
       "com.trueaccord.scalapb" %% "scalapb-runtime"      % scalapbVersion % "protobuf",
       "com.trueaccord.scalapb" %% "scalapb-runtime-grpc" % com.trueaccord.scalapb.compiler.Version.scalapbVersion,
