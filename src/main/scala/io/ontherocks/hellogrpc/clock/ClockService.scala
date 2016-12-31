@@ -17,17 +17,31 @@
 package io.ontherocks.hellogrpc
 package clock
 
+import java.util.concurrent.{Executors, TimeUnit}
+
 import io.grpc.stub.StreamObserver
 
 class ClockService extends ClockGrpc.Clock {
 
   def getTime(request: TimeRequest, responseObserver: StreamObserver[TimeResponse]): Unit = {
-    for (i <- 1 to 10) { // limit to the next ten seconds
-      val currentTime = System.currentTimeMillis()
-      responseObserver.onNext(TimeResponse(currentTime))
-      Thread.sleep(1000) // just for demo purposes - don't do this
+    val scheduler = Executors.newSingleThreadScheduledExecutor()
+
+    val tick = new Runnable {
+      var counter = 0
+      def run() = {
+        if (counter <= 10) {
+          val currentTime = System.currentTimeMillis()
+          responseObserver.onNext(TimeResponse(currentTime))
+          counter += 1
+        } else {
+          scheduler.shutdown()
+          responseObserver.onCompleted()
+        }
+      }
     }
-    responseObserver.onCompleted()
+
+    scheduler.scheduleAtFixedRate(tick, 0l, 100!0l, TimeUnit.MILLISECONDS)
+
   }
 
 }
