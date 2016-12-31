@@ -40,7 +40,7 @@ class ClockService extends ClockGrpc.Clock {
       }
     }
 
-    scheduler.scheduleAtFixedRate(tick, 0l, 100!0l, TimeUnit.MILLISECONDS)
+    scheduler.scheduleAtFixedRate(tick, 0l, 1000l, TimeUnit.MILLISECONDS)
 
   }
 
