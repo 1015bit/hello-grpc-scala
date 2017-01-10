@@ -86,7 +86,7 @@ lazy val pbSettings =
     PB.targets.in(Compile) := Seq(scalapb.gen() -> sourceManaged.in(Compile).value),
     libraryDependencies ++= Seq(
       "com.trueaccord.scalapb" %% "scalapb-runtime"      % scalapbVersion % "protobuf",
-      "com.trueaccord.scalapb" %% "scalapb-runtime-grpc" % com.trueaccord.scalapb.compiler.Version.scalapbVersion,
+      "com.trueaccord.scalapb" %% "scalapb-runtime-grpc" % scalapbVersion,
       "io.grpc"                % "grpc-netty"            % "1.0.1"
     )
   )
