@@ -3,7 +3,7 @@ syntax = "proto3";
 package io.ontherocks.hellogrpc;
 
 service Clock {
-  // returns the current time (in ms) every second
+  // returns the current time (in ms) every second for 10 seconds
   rpc GetTime(TimeRequest) returns (stream TimeResponse) {}
 }
 
