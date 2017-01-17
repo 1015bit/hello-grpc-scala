@@ -5,3 +5,5 @@ scala:
 
 jdk:
   - openjdk8
+
+sudo: required
