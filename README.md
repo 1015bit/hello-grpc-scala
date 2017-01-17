@@ -2,6 +2,8 @@
 
 Welcome to hello-grpc!
 
+![travis-ci status](https://travis-ci.org/pbvie/hello-grpc.svg?branch=master)
+
 ## Contribution policy ##
 
 Contributions via GitHub pull requests are gladly accepted from their original
