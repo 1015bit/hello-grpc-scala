@@ -2,7 +2,7 @@
 
 Welcome to hello-grpc!
 
-![travis-ci status](https://travis-ci.org/pbvie/hello-grpc.svg?branch=master)
+[![Build Status](https://travis-ci.org/pbvie/hello-grpc.svg?branch=master)](https://travis-ci.org/pbvie/hello-grpc)
 
 ## Contribution policy ##
 
