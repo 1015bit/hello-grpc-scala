@@ -4,6 +4,10 @@ Welcome to hello-grpc!
 
 [![Build Status](https://travis-ci.org/pbvie/hello-grpc.svg?branch=master)](https://travis-ci.org/pbvie/hello-grpc)
 
+## Blog
+
+The corresponding blog post can be found here: [Hello gRPC! (with ScalaPB)](https://blog.codecentric.de/en/2017/01/hello-grpc-scalapb/)
+
 ## Contribution policy ##
 
 Contributions via GitHub pull requests are gladly accepted from their original
