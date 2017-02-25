@@ -19,12 +19,16 @@ package clock
 
 import io.grpc.ManagedChannelBuilder
 import io.grpc.stub.StreamObserver
-import io.ontherocks.hellogrpc.clock.ClockGrpc.{ ClockBlockingStub, ClockStub }
+import io.ontherocks.hellogrpc.clock.ClockGrpc.{ClockBlockingStub, ClockStub}
+import org.apache.logging.log4j.LogManager
 
-import scala.concurrent.{ Await, Promise }
+import scala.concurrent.{Await, Promise}
 import scala.concurrent.duration._
 
 object ClockClientApp {
+
+  implicit val logger = LogManager.getLogger(getClass)
+  debug("Starting tier-change-manager service...")
 
   private val Host = "localhost"
   private val Port = 50051
@@ -39,7 +43,7 @@ object ClockClientApp {
     // remaining code will be executed AFTER stream/iterator has completed
     val blockingClockResponse: Iterator[TimeResponse] = blockingClockClient.getTime(request)
     for (t <- blockingClockResponse) {
-      println(s"[blocking client] received: $t")
+      debug(s"[blocking client] received: $t")
     }
 
     // --- non-blocking/asynchronous call ---
@@ -49,13 +53,13 @@ object ClockClientApp {
     // calling getTime and registering an observer will NOT block the current thread
     val timeResponseObserver = new StreamObserver[TimeResponse] {
 
-      def onNext(value: TimeResponse): Unit = println(s"[async client] received: $value")
+      def onNext(value: TimeResponse): Unit = debug(s"[async client] received: $value")
 
-      def onError(t: Throwable): Unit = println(s"[async client] error: $t")
+      def onError(t: Throwable): Unit = debug(s"[async client] error: $t")
 
       def onCompleted(): Unit = {
         streamCompleted.success(())
-        println("[async client] stream completed")
+        debug("[async client] stream completed")
       }
 
     }

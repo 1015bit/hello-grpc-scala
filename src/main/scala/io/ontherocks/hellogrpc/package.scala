@@ -16,10 +16,16 @@
 
 package io.ontherocks
 
+import org.apache.logging.log4j.Logger
+
 package object hellogrpc {
 
   type Traversable[+A] = scala.collection.immutable.Traversable[A]
   type Iterable[+A]    = scala.collection.immutable.Iterable[A]
   type Seq[+A]         = scala.collection.immutable.Seq[A]
   type IndexedSeq[+A]  = scala.collection.immutable.IndexedSeq[A]
+
+  def debug(msg: => String)(implicit logger: Logger): Unit =
+    if (logger.isDebugEnabled) logger.debug(msg)
+
 }

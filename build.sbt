@@ -9,6 +9,9 @@ lazy val `hello-grpc` =
     .settings(settings)
     .settings(
       libraryDependencies ++= Seq(
+        library.log4jApi,
+        library.log4jCore,
+        library.log4jSlf4jImpl,
         library.scalaCheck % Test,
         library.scalaTest  % Test
       )
@@ -21,11 +24,15 @@ lazy val `hello-grpc` =
 lazy val library =
   new {
     object Version {
+      val log4j      = "2.8"
       val scalaCheck = "1.13.4"
       val scalaTest  = "3.0.1"
     }
-    val scalaCheck = "org.scalacheck" %% "scalacheck" % Version.scalaCheck
-    val scalaTest  = "org.scalatest"  %% "scalatest"  % Version.scalaTest
+    val log4jApi        = "org.apache.logging.log4j" %  "log4j-api"         % Version.log4j
+    val log4jCore       = "org.apache.logging.log4j" %  "log4j-core"        % Version.log4j
+    val log4jSlf4jImpl  = "org.apache.logging.log4j" %  "log4j-slf4j-impl"  % Version.log4j
+    val scalaCheck      = "org.scalacheck"           %% "scalacheck"        % Version.scalaCheck
+    val scalaTest       = "org.scalatest"            %% "scalatest"         % Version.scalaTest
   }
 
 // *****************************************************************************
