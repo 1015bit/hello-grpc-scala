@@ -44,7 +44,7 @@ object ClockClientApp {
 
     // --- non-blocking/asynchronous call ---
     val asyncClockClient: ClockStub = ClockGrpc.stub(channel)
-    val streamCompleted = Promise[Unit]()
+    val streamCompleted             = Promise[Unit]()
 
     // calling getTime and registering an observer will NOT block the current thread
     val timeResponseObserver = new StreamObserver[TimeResponse] {

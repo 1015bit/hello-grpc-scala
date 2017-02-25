@@ -17,7 +17,7 @@
 package io.ontherocks.hellogrpc.server
 
 import io.grpc.ServerServiceDefinition
-import io.ontherocks.hellogrpc.clock.{ClockGrpc, ClockService}
+import io.ontherocks.hellogrpc.clock.{ ClockGrpc, ClockService }
 
 object HelloGrpcServer {
   private val Port = 50051

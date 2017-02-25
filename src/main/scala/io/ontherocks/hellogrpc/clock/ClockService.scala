@@ -18,7 +18,7 @@ package io.ontherocks.hellogrpc
 package clock
 
 import java.util.concurrent.atomic.AtomicInteger
-import java.util.concurrent.{Executors, TimeUnit}
+import java.util.concurrent.{ Executors, TimeUnit }
 
 import io.grpc.stub.StreamObserver
 
