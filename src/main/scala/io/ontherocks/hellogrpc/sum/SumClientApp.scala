@@ -18,13 +18,16 @@ package io.ontherocks.hellogrpc
 package sum
 
 import io.grpc.ManagedChannelBuilder
-import io.ontherocks.hellogrpc.sum.SumGrpc.{ SumBlockingStub, SumStub }
+import io.ontherocks.hellogrpc.sum.SumGrpc.{SumBlockingStub, SumStub}
+import org.apache.logging.log4j.LogManager
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.util.{ Failure, Success }
+import scala.util.{Failure, Success}
 
 object SumClientApp {
+
+  implicit val logger = LogManager.getLogger(getClass)
 
   private val Host = "localhost"
   private val Port = 50051
@@ -42,8 +45,8 @@ object SumClientApp {
     val asyncSumClient: SumStub               = SumGrpc.stub(channel)
     val asyncSumResponse: Future[SumResponse] = asyncSumClient.calcSum(request)
     asyncSumResponse.onComplete {
-      case Success(sumResponse) => println(s"[async client] received response: $sumResponse")
-      case Failure(e)           => println(s"[async client] error while calling sum service: $e")
+      case Success(sumResponse) => debug(s"[async client] received response: $sumResponse")
+      case Failure(e)           => debug(s"[async client] error while calling sum service: $e")
     }
   }
 
