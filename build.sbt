@@ -72,7 +72,6 @@ lazy val gitSettings =
     git.useGitDescribe := true
   )
 
-import de.heikoseeberger.sbtheader.HeaderPattern
 import de.heikoseeberger.sbtheader.license.Apache2_0
 lazy val headerSettings =
   Seq(
@@ -87,6 +86,6 @@ lazy val pbSettings =
     libraryDependencies ++= Seq(
       "com.trueaccord.scalapb" %% "scalapb-runtime"      % scalapbVersion % "protobuf",
       "com.trueaccord.scalapb" %% "scalapb-runtime-grpc" % scalapbVersion,
-      "io.grpc"                % "grpc-netty"            % "1.0.1"
+      "io.grpc"                % "grpc-netty"            % "1.1.2"
     )
   )

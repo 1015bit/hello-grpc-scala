@@ -25,7 +25,7 @@ object ClockServerApp {
 
   def main(args: Array[String]): Unit = {
     val serverServiceDefinition = ClockGrpc.bindService(new ClockService, ExecutionContext.global)
-    val server = new HelloGrpcServer(serverServiceDefinition)
+    val server                  = new HelloGrpcServer(serverServiceDefinition)
     server.start()
     server.blockUntilShutdown()
   }

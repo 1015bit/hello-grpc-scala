@@ -25,7 +25,7 @@ object SumServerApp {
 
   def main(args: Array[String]): Unit = {
     val serverServiceDefinition = SumGrpc.bindService(new SumService, ExecutionContext.global)
-    val server = new HelloGrpcServer(serverServiceDefinition)
+    val server                  = new HelloGrpcServer(serverServiceDefinition)
     server.start()
     server.blockUntilShutdown()
   }
