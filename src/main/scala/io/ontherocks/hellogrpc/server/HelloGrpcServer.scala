@@ -16,28 +16,28 @@
 
 package io.ontherocks.hellogrpc.server
 
-import io.grpc.ServerServiceDefinition
-import io.ontherocks.hellogrpc.clock.{ ClockGrpc, ClockService }
-
-object HelloGrpcServer {
-  private val Port = 50051
-}
+import com.typesafe.config.ConfigFactory
+import io.grpc.{ Server, ServerBuilder, ServerServiceDefinition }
+import org.apache.logging.log4j.LogManager
 
 class HelloGrpcServer(serverServiceDefinition: ServerServiceDefinition) {
 
-  import io.grpc.{ Server, ServerBuilder }
+  implicit val logger = LogManager.getLogger(getClass)
+
+  private val config     = ConfigFactory.load()
+  private val serverPort = config.getInt("hello-grpc.service.port")
 
   private var server: Option[Server] = None
 
   def start(): Unit = {
     server = Option(
       ServerBuilder
-        .forPort(HelloGrpcServer.Port)
+        .forPort(serverPort)
         .addService(serverServiceDefinition)
         .build
         .start
     )
-    println(s"Server started. Listening on port ${HelloGrpcServer.Port}")
+    logger.info(s"Server started. Listening on port $serverPort")
 
     // make sure our server is stopped when jvm is shut down
     Runtime.getRuntime.addShutdownHook(new Thread() {

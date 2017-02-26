@@ -25,6 +25,12 @@ package object hellogrpc {
   type Seq[+A]         = scala.collection.immutable.Seq[A]
   type IndexedSeq[+A]  = scala.collection.immutable.IndexedSeq[A]
 
+  /**
+    * Helper method to avoid the need to manually check `if (logger.isDebugEnabled)` every time.
+    *
+    * @param msg
+    * @param logger
+    */
   def debug(msg: => String)(implicit logger: Logger): Unit =
     if (logger.isDebugEnabled) logger.debug(msg)
 
