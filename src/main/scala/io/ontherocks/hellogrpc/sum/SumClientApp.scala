@@ -17,20 +17,22 @@
 package io.ontherocks.hellogrpc
 package sum
 
+import com.typesafe.config.ConfigFactory
 import io.grpc.ManagedChannelBuilder
-import io.ontherocks.hellogrpc.sum.SumGrpc.{SumBlockingStub, SumStub}
+import io.ontherocks.hellogrpc.sum.SumGrpc.{ SumBlockingStub, SumStub }
 import org.apache.logging.log4j.LogManager
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.util.{Failure, Success}
+import scala.util.{ Failure, Success }
 
 object SumClientApp {
 
   implicit val logger = LogManager.getLogger(getClass)
 
-  private val Host = "localhost"
-  private val Port = 50051
+  private val config = ConfigFactory.load()
+  private val Host   = config.getString("hello-grpc.service.host")
+  private val Port   = config.getInt("hello-grpc.service.port")
 
   private val channel = ManagedChannelBuilder.forAddress(Host, Port).usePlaintext(true).build
   private val request = SumRequest(3, 4)
@@ -39,7 +41,7 @@ object SumClientApp {
     // blocking/synchronous call
     val blockingSumClient: SumBlockingStub = SumGrpc.blockingStub(channel)
     val blockingSumResponse: SumResponse   = blockingSumClient.calcSum(request)
-    println(s"[blocking client] received response: $blockingSumResponse")
+    debug(s"[blocking client] received response: $blockingSumResponse")
 
     // non-blocking/asynchronous call
     val asyncSumClient: SumStub               = SumGrpc.stub(channel)

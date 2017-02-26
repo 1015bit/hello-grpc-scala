@@ -17,21 +17,23 @@
 package io.ontherocks.hellogrpc
 package clock
 
+import com.typesafe.config.ConfigFactory
 import io.grpc.ManagedChannelBuilder
 import io.grpc.stub.StreamObserver
-import io.ontherocks.hellogrpc.clock.ClockGrpc.{ClockBlockingStub, ClockStub}
+import io.ontherocks.hellogrpc.clock.ClockGrpc.{ ClockBlockingStub, ClockStub }
 import org.apache.logging.log4j.LogManager
 
-import scala.concurrent.{Await, Promise}
+import scala.concurrent.{ Await, Promise }
 import scala.concurrent.duration._
 
 object ClockClientApp {
 
-  implicit val logger = LogManager.getLogger(getClass)
+  private implicit val logger = LogManager.getLogger(getClass)
   debug("Starting tier-change-manager service...")
 
-  private val Host = "localhost"
-  private val Port = 50051
+  private val config = ConfigFactory.load()
+  private val Host   = config.getString("hello-grpc.service.host")
+  private val Port   = config.getInt("hello-grpc.service.port")
 
   private val channel = ManagedChannelBuilder.forAddress(Host, Port).usePlaintext(true).build
   private val request = TimeRequest()
