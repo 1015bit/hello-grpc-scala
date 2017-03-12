@@ -35,7 +35,9 @@ object SumClientApp {
   private val Port   = config.getInt("hello-grpc.service.port")
 
   private val channel = ManagedChannelBuilder.forAddress(Host, Port).usePlaintext(true).build
+  // scalastyle:off magic.number
   private val request = SumRequest(3, 4)
+  // scalastyle:on magic.number
 
   def main(args: Array[String]): Unit = {
     // blocking/synchronous call

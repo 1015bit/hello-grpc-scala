@@ -49,7 +49,7 @@ class ClockServiceSpec extends HelloGrpcBaseSpec {
 
       whenReady(collectedResponsesPromise.future) { collectedResponses =>
         val afterCompletionMs = System.currentTimeMillis()
-        collectedResponses.size shouldEqual 11
+        collectedResponses.size shouldEqual ClockService.RepeatForSeconds + 1
         assert(
           collectedResponses.forall(
             timeMs => (beforeStartMs <= timeMs && timeMs <= afterCompletionMs)

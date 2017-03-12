@@ -22,7 +22,17 @@ import java.util.concurrent.{ Executors, TimeUnit }
 
 import io.grpc.stub.StreamObserver
 
+object ClockService {
+
+  val RepeatForSeconds = 10
+  val InitialDelayMs   = 0L
+  val IntervalMs       = 1000L
+
+}
+
 class ClockService extends ClockGrpc.Clock {
+
+  import ClockService._
 
   /**
     * Returns the current time in milliseconds every second for the next 10 seconds.
@@ -30,7 +40,7 @@ class ClockService extends ClockGrpc.Clock {
   def getTime(request: TimeRequest, responseObserver: StreamObserver[TimeResponse]): Unit = {
     val scheduler = Executors.newSingleThreadScheduledExecutor()
     val tick = new Runnable {
-      val counter = new AtomicInteger(10)
+      val counter = new AtomicInteger(RepeatForSeconds)
       def run() =
         if (counter.getAndDecrement() >= 0) {
           val currentTime = System.currentTimeMillis()
@@ -40,7 +50,7 @@ class ClockService extends ClockGrpc.Clock {
           responseObserver.onCompleted()
         }
     }
-    scheduler.scheduleAtFixedRate(tick, 0l, 1000l, TimeUnit.MILLISECONDS)
+    scheduler.scheduleAtFixedRate(tick, InitialDelayMs, IntervalMs, TimeUnit.MILLISECONDS)
   }
 
 }

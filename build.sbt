@@ -43,7 +43,7 @@ lazy val library =
 
 // *****************************************************************************
 // Settings
-// *****************************************************************************        |
+// *****************************************************************************
 
 lazy val settings =
 commonSettings ++
@@ -65,14 +65,12 @@ lazy val commonSettings =
       "-deprecation",
       "-language:_",
       "-target:jvm-1.8",
-      "-encoding",
-      "UTF-8"
+      "-encoding", "UTF-8",
+      "-Ywarn-unused-import"
     ),
     javacOptions ++= Seq(
-      "-source",
-      "1.8",
-      "-target",
-      "1.8"
+      "-source", "1.8",
+      "-target", "1.8"
     ),
     unmanagedSourceDirectories.in(Compile) :=
       Seq(scalaSource.in(Compile).value),
@@ -102,3 +100,10 @@ lazy val pbSettings =
       "io.grpc"                % "grpc-netty"            % "1.1.2"
     )
   )
+
+// *****************************************************************************
+// Aliases
+// *****************************************************************************
+
+addCommandAlias("cstyle", ";compile;scalastyle")
+addCommandAlias("ccstyle", ";clean;compile;scalastyle")
