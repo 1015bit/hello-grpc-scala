@@ -23,24 +23,23 @@ import java.util.concurrent.{ Executors, TimeUnit }
 import io.grpc.stub.StreamObserver
 
 object ClockService {
-
-  val RepeatForSeconds = 10
-  val InitialDelayMs   = 0L
-  val IntervalMs       = 1000L
-
+  val InitialDelayMs = 0L
+  val IntervalMs     = 1000L
 }
 
-class ClockService extends ClockGrpc.Clock {
-
-  import ClockService._
+class ClockService(repeatForSeconds: Int) extends ClockGrpc.Clock {
 
   /**
-    * Returns the current time in milliseconds every second for the next 10 seconds.
+    * Returns the current time in milliseconds every second for `repeatForSeconds` times.
+    *
+    * @param request
+    * @param responseObserver
+    * @return Unit
     */
   def getTime(request: TimeRequest, responseObserver: StreamObserver[TimeResponse]): Unit = {
     val scheduler = Executors.newSingleThreadScheduledExecutor()
     val tick = new Runnable {
-      val counter = new AtomicInteger(RepeatForSeconds)
+      val counter = new AtomicInteger(repeatForSeconds)
       def run() =
         if (counter.getAndDecrement() >= 0) {
           val currentTime = System.currentTimeMillis()
@@ -50,6 +49,8 @@ class ClockService extends ClockGrpc.Clock {
           responseObserver.onCompleted()
         }
     }
+
+    import ClockService._
     scheduler.scheduleAtFixedRate(tick, InitialDelayMs, IntervalMs, TimeUnit.MILLISECONDS)
   }
 

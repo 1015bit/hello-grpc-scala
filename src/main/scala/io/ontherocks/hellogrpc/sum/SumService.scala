@@ -21,6 +21,12 @@ import scala.concurrent.Future
 
 protected class SumService extends SumGrpc.Sum {
 
+  /**
+    * Returns the sum of two numbers passed in the `SumRequest`.
+    *
+    * @param `SumRequest` containing two numbers to be summed up
+    * @return `SumResponse` containing the sum of the two given numbers
+    */
   def calcSum(request: SumRequest): Future[SumResponse] = {
     val result = SumResponse(request.a + request.b)
     Future.successful(result)

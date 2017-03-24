@@ -23,11 +23,16 @@ import org.scalatest.time.{ Seconds, Span }
 import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.Promise
 
+object ClockServiceSpec {
+  val RepeatForSeconds = 3
+}
+
 class ClockServiceSpec extends HelloGrpcBaseSpec {
 
-  implicit val patienceConf = PatienceConfig(timeout = Span(12, Seconds))
+  implicit val patienceConf = PatienceConfig(timeout = Span(7, Seconds))
 
-  val clockService = new ClockService()
+  import ClockServiceSpec._
+  val clockService = new ClockService(RepeatForSeconds)
 
   "ClockService" should {
     "return the current time in ms every second for the next ten seconds" in {
@@ -49,7 +54,7 @@ class ClockServiceSpec extends HelloGrpcBaseSpec {
 
       whenReady(collectedResponsesPromise.future) { collectedResponses =>
         val afterCompletionMs = System.currentTimeMillis()
-        collectedResponses.size shouldEqual ClockService.RepeatForSeconds + 1
+        collectedResponses.size shouldEqual RepeatForSeconds + 1
         assert(
           collectedResponses.forall(
             timeMs => (beforeStartMs <= timeMs && timeMs <= afterCompletionMs)
