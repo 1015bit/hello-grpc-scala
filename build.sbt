@@ -26,10 +26,10 @@ lazy val `hello-grpc` =
 lazy val library =
   new {
     object Version {
-      val log4j          = "2.8"
-      val mockito        = "2.7.13"
-      val scalaCheck     = "1.13.4"
-      val scalaTest      = "3.0.1"
+      val log4j          = "2.8.2"
+      val mockito        = "2.8.47"
+      val scalaCheck     = "1.13.5"
+      val scalaTest      = "3.0.3"
       val typesafeConfig = "1.3.1"
     }
     val log4jApi       = "org.apache.logging.log4j" % "log4j-api"        % Version.log4j
@@ -53,7 +53,7 @@ pbSettings
 
 lazy val commonSettings =
   Seq(
-    scalaVersion := "2.12.1",
+    scalaVersion := "2.12.2",
     crossScalaVersions := Seq(scalaVersion.value, "2.11.8"),
     organization := "io.ontherocks",
     licenses += ("Apache 2.0",
@@ -97,7 +97,7 @@ lazy val pbSettings =
     libraryDependencies ++= Seq(
       "com.trueaccord.scalapb" %% "scalapb-runtime"      % scalapbVersion % "protobuf",
       "com.trueaccord.scalapb" %% "scalapb-runtime-grpc" % scalapbVersion,
-      "io.grpc"                % "grpc-netty"            % "1.1.2"
+      "io.grpc"                % "grpc-netty"            % "1.4.0"
     )
   )
 
