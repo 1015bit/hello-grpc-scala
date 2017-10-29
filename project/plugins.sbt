@@ -1,7 +1,9 @@
-addSbtPlugin("com.lucidchart"    %  "sbt-scalafmt"            % "1.3")
-addSbtPlugin("com.thesamet"      %  "sbt-protoc"             % "0.99.11")
-addSbtPlugin("com.typesafe.sbt"  %  "sbt-git"                % "0.8.5")
-addSbtPlugin("de.heikoseeberger" %  "sbt-header"             % "1.6.0")
-addSbtPlugin("org.scalastyle"    %% "scalastyle-sbt-plugin"  % "0.8.0")
+addSbtPlugin("org.foundweekends" % "sbt-bintray"           % "0.5.1")
+addSbtPlugin("io.get-coursier"   % "sbt-coursier"          % "1.0.0-RC13")
+addSbtPlugin("com.typesafe.sbt"  % "sbt-git"               % "0.9.3")
+addSbtPlugin("de.heikoseeberger" % "sbt-header"            % "3.0.2")
+addSbtPlugin("com.thesamet"      % "sbt-protoc"            % "0.99.12")
+addSbtPlugin("com.lucidchart"    % "sbt-scalafmt-coursier" % "1.14")
 
-libraryDependencies += "com.trueaccord.scalapb" %% "compilerplugin" % "0.6.0"
+libraryDependencies += "com.trueaccord.scalapb" %% "compilerplugin" % "0.6.6"
+libraryDependencies += "org.slf4j"               % "slf4j-nop"      % "1.7.25"      // Needed by sbt-git

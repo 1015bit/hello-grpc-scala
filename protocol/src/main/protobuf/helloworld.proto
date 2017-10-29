@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "scalapb/scalapb.proto";
+
+package io.ontherocks.hellogrpc;
+
+/*
+ * Returns a greeting for the given person optionally including a custom message.
+ */
+service HelloWorld {
+  rpc SayHello(ToBeGreeted) returns (Greeting) {}
+}
+
+message ToBeGreeted {
+  message Person {
+    string name = 1;
+  }
+
+  Person person = 1;
+  google.protobuf.StringValue msg = 2;
+}
+
+message Greeting {
+  string message = 1;
+}

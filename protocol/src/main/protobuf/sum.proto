@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package io.ontherocks.hellogrpc;
+
+/*
+ * Sums up numbers received from the client and returns the current result after each received request.
+ */
+service Sum {
+  rpc Add(stream SumRequest) returns (stream SumResponse) {}
+}
+
+message SumRequest {
+  int32 toAdd = 1;
+}
+
+message SumResponse {
+  int32 currentResult = 1;
+}

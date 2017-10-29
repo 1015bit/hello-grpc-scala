@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "scalapb/scalapb.proto";
+
+package io.ontherocks.introgrpc;
+
+option (scalapb.options) = {
+  // use a custom Scala package name
+  // package_name: "io.ontherocks.introgrpc.demo"
+
+  // don't append file name to package
+  flat_package: true
+
+  // generate one Scala file for all messages (services still get their own file)
+  single_file: true
+
+  // add imports to generated file
+  // useful when extending traits or using custom types
+  import: "io.ontherocks.hellogrpc.RockingMessage"
+
+  // code to put at the top of generated file
+  // works only with `single_file: true`
+  preamble: "sealed trait SomeSealedTrait"
+};
+
+/*
+ * Demoes various customization options provided by ScalaPBs.
+ */
+message ToBeGreeted {
+  option (scalapb.message).extends = "io.ontherocks.hellogrpc.RockingMessage";
+
+  message Person {
+    string name = 1;
+  }
+
+  Person person = 1;
+  google.protobuf.StringValue msg = 2;
+}
+
+message Greeting {
+  string message = 1;
+}

@@ -2,43 +2,62 @@
 // Projects
 // *****************************************************************************
 
-lazy val `hello-grpc` =
+lazy val `hello-grpc-scala-demo` =
   project
-    .in(file("."))
+    .in(file("demo"))
     .enablePlugins(AutomateHeaderPlugin, GitVersioning)
     .settings(settings)
+    .settings(resolverSettings)
     .settings(
       libraryDependencies ++= Seq(
-        library.log4jApi,
-        library.log4jCore,
-        library.log4jSlf4jImpl,
-        library.typesafeConfig,
-        library.mockito    % Test,
+        library.helloGrpcProto,
+        library.monix,
         library.scalaCheck % Test,
         library.scalaTest  % Test
       )
     )
 
+lazy val `hello-grpc-scala-protocol` =
+  project
+    .in(file("protocol"))
+    .enablePlugins(AutomateHeaderPlugin, GitVersioning)
+    .settings(settings)
+    .settings(scalaPbSettings)
+    .settings(
+      libraryDependencies ++= Seq(
+        library.grpcNetty,
+        library.scalaPbRuntime,
+        library.scalaPbRuntimeGrpc,
+        library.scalaCheck % Test,
+        library.scalaTest  % Test
+      )
+    )
+
+lazy val `hello-grpc-scala` =
+  project
+    .in(file("."))
+    .aggregate(`hello-grpc-scala-demo`, `hello-grpc-scala-protocol`)
+
 // *****************************************************************************
 // Library dependencies
 // *****************************************************************************
 
+import com.trueaccord.scalapb.compiler.{ Version => VersionPb }
 lazy val library =
   new {
     object Version {
-      val log4j          = "2.8.2"
-      val mockito        = "2.8.47"
+      val helloGrpcProto = "scalavienna-final"
+      val monix          = "2.3.0"
       val scalaCheck     = "1.13.5"
-      val scalaTest      = "3.0.3"
-      val typesafeConfig = "1.3.1"
+      val scalaTest      = "3.0.4"
     }
-    val log4jApi       = "org.apache.logging.log4j" % "log4j-api"        % Version.log4j
-    val log4jCore      = "org.apache.logging.log4j" % "log4j-core"       % Version.log4j
-    val log4jSlf4jImpl = "org.apache.logging.log4j" % "log4j-slf4j-impl" % Version.log4j
-    val mockito        = "org.mockito"              % "mockito-core"     % Version.mockito
-    val scalaCheck     = "org.scalacheck"           %% "scalacheck"      % Version.scalaCheck
-    val scalaTest      = "org.scalatest"            %% "scalatest"       % Version.scalaTest
-    val typesafeConfig = "com.typesafe"             % "config"           % Version.typesafeConfig
+    val grpcNetty          = "io.grpc"                % "grpc-netty"            % VersionPb.grpcJavaVersion
+    val helloGrpcProto     = "io.ontherocks"          %% "hello-grpc-proto"     % Version.helloGrpcProto
+    val monix              = "io.monix"               %% "monix"                % Version.monix
+    val scalaCheck         = "org.scalacheck"         %% "scalacheck"           % Version.scalaCheck
+    val scalaPbRuntime     = "com.trueaccord.scalapb" %% "scalapb-runtime"      % VersionPb.scalapbVersion % "protobuf"
+    val scalaPbRuntimeGrpc = "com.trueaccord.scalapb" %% "scalapb-runtime-grpc" % VersionPb.scalapbVersion
+    val scalaTest          = "org.scalatest"          %% "scalatest"            % Version.scalaTest
   }
 
 // *****************************************************************************
@@ -48,34 +67,31 @@ lazy val library =
 lazy val settings =
 commonSettings ++
 gitSettings ++
-headerSettings ++
-pbSettings
+scalafmtSettings
 
 lazy val commonSettings =
   Seq(
-    scalaVersion := "2.12.2",
-    crossScalaVersions := Seq(scalaVersion.value, "2.11.8"),
+    scalaVersion := "2.12.4",
     organization := "io.ontherocks",
-    licenses += ("Apache 2.0",
-    url("http://www.apache.org/licenses/LICENSE-2.0")),
-    mappings.in(Compile, packageBin) +=
-      baseDirectory.in(ThisBuild).value / "LICENSE" -> "LICENSE",
+    organizationName := "Petra Bierleutgeb",
+    startYear := Some(2017),
+    licenses += ("Apache-2.0", new URL("https://www.apache.org/licenses/LICENSE-2.0.txt")),
     scalacOptions ++= Seq(
       "-unchecked",
       "-deprecation",
       "-language:_",
       "-target:jvm-1.8",
-      "-encoding", "UTF-8",
-      "-Ywarn-unused-import"
+      "-Xfatal-warnings",
+      "-Xlint",
+      "-Yno-adapted-args",
+      "-Ypartial-unification",
+      "-Ywarn-dead-code",
+      "-Ywarn-numeric-widen",
+      "-Ywarn-unused-import",
+      "-encoding", "UTF-8"
     ),
-    javacOptions ++= Seq(
-      "-source", "1.8",
-      "-target", "1.8"
-    ),
-    unmanagedSourceDirectories.in(Compile) :=
-      Seq(scalaSource.in(Compile).value),
-    unmanagedSourceDirectories.in(Test) :=
-      Seq(scalaSource.in(Test).value)
+    unmanagedSourceDirectories.in(Compile) := Seq(scalaSource.in(Compile).value),
+    unmanagedSourceDirectories.in(Test) := Seq(scalaSource.in(Test).value)
   )
 
 lazy val gitSettings =
@@ -83,27 +99,18 @@ lazy val gitSettings =
     git.useGitDescribe := true
   )
 
-import de.heikoseeberger.sbtheader.license.Apache2_0
-lazy val headerSettings =
+lazy val resolverSettings =
   Seq(
-    headers := Map("scala" -> Apache2_0("2016", "Petra Bierleutgeb"))
+    resolvers += Resolver.bintrayRepo("pbvie", "maven")
   )
 
-import com.trueaccord.scalapb.compiler.Version.scalapbVersion
-lazy val pbSettings =
+lazy val scalaPbSettings = Seq(
+  PB.targets in Compile := Seq(scalapb.gen() -> (sourceManaged in Compile).value)
+)
+
+lazy val scalafmtSettings =
   Seq(
-    PB.protoSources.in(Compile) := Seq(sourceDirectory.in(Compile).value / "proto"),
-    PB.targets.in(Compile) := Seq(scalapb.gen() -> sourceManaged.in(Compile).value),
-    libraryDependencies ++= Seq(
-      "com.trueaccord.scalapb" %% "scalapb-runtime"      % scalapbVersion % "protobuf",
-      "com.trueaccord.scalapb" %% "scalapb-runtime-grpc" % scalapbVersion,
-      "io.grpc"                % "grpc-netty"            % "1.4.0"
-    )
+    scalafmtOnCompile := true,
+    scalafmtOnCompile.in(Sbt) := false,
+    scalafmtVersion := "1.3.0"
   )
-
-// *****************************************************************************
-// Aliases
-// *****************************************************************************
-
-addCommandAlias("cstyle", ";compile;scalastyle")
-addCommandAlias("ccstyle", ";clean;compile;scalastyle")
