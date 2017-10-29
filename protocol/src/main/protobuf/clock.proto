@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package io.ontherocks.hellogrpc;
+
+/*
+ * Continuously returns the current time in milliseconds.
+ */
+service Clock {
+  rpc StreamTime(TimeRequest) returns (stream TimeResponse) {}
+}
+
+message TimeRequest {}
+
+message TimeResponse {
+  int64 currentTime = 1;
+}
