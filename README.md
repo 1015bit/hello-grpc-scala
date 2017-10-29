@@ -1,4 +1,4 @@
-# hello-grpc #
+# hello-grpc-scala #
 
 [![Build Status](https://travis-ci.org/pbvie/hello-grpc.svg?branch=master)](https://travis-ci.org/pbvie/hello-grpc)
 
