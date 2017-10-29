@@ -46,18 +46,18 @@ import com.trueaccord.scalapb.compiler.{ Version => VersionPb }
 lazy val library =
   new {
     object Version {
-      val helloGrpcProto = "scalavienna-final"
+      val helloGrpcProto = "1.0.0"
       val monix          = "2.3.0"
       val scalaCheck     = "1.13.5"
       val scalaTest      = "3.0.4"
     }
-    val grpcNetty          = "io.grpc"                % "grpc-netty"            % VersionPb.grpcJavaVersion
-    val helloGrpcProto     = "io.ontherocks"          %% "hello-grpc-proto"     % Version.helloGrpcProto
-    val monix              = "io.monix"               %% "monix"                % Version.monix
-    val scalaCheck         = "org.scalacheck"         %% "scalacheck"           % Version.scalaCheck
-    val scalaPbRuntime     = "com.trueaccord.scalapb" %% "scalapb-runtime"      % VersionPb.scalapbVersion % "protobuf"
-    val scalaPbRuntimeGrpc = "com.trueaccord.scalapb" %% "scalapb-runtime-grpc" % VersionPb.scalapbVersion
-    val scalaTest          = "org.scalatest"          %% "scalatest"            % Version.scalaTest
+    val grpcNetty          = "io.grpc"                 % "grpc-netty"                  % VersionPb.grpcJavaVersion
+    val helloGrpcProto     = "io.ontherocks"          %% "hello-grpc-scala-protocol"   % Version.helloGrpcProto
+    val monix              = "io.monix"               %% "monix"                       % Version.monix
+    val scalaCheck         = "org.scalacheck"         %% "scalacheck"                  % Version.scalaCheck
+    val scalaPbRuntime     = "com.trueaccord.scalapb" %% "scalapb-runtime"             % VersionPb.scalapbVersion % "protobuf"
+    val scalaPbRuntimeGrpc = "com.trueaccord.scalapb" %% "scalapb-runtime-grpc"        % VersionPb.scalapbVersion
+    val scalaTest          = "org.scalatest"          %% "scalatest"                   % Version.scalaTest
   }
 
 // *****************************************************************************

@@ -3,7 +3,7 @@ syntax = "proto3";
 import "google/protobuf/wrappers.proto";
 import "scalapb/scalapb.proto";
 
-package io.ontherocks.hellogrpc;
+package io.ontherocks.hellogrpc.customizations;
 
 option (scalapb.options) = {
   // use a custom Scala package name
