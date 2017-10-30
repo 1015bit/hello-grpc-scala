@@ -1,8 +1,8 @@
 # hello-grpc-scala #
 
-[![Build Status](https://travis-ci.org/pbvie/hello-grpc.svg?branch=master)](https://travis-ci.org/pbvie/hello-grpc)
+[![Build Status](https://travis-ci.org/pbvie/hello-grpc-scala.svg?branch=master)](https://travis-ci.org/pbvie/hello-grpc-scala)
 
-Welcome to hello-grpc!
+Welcome to hello-grpc-scala!
 
 ## Talks and slides
 
